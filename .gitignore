@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Environment
+.env
+
+# Maunakea runtime data — runs, prompts, responses
+data/
+
+# uv
+uv.lock
+
+# pytest
+.pytest_cache/
+
+# ruff
+.ruff_cache/

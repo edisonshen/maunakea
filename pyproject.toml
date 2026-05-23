@@ -1,0 +1,37 @@
+[project]
+name = "maunakea"
+version = "0.0.1"
+description = "Generic recursive auto-improve system. Inputs: dataset path + goal."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Feng Shen" }]
+dependencies = [
+    "pandas",
+    "pyarrow",
+    "click",
+    "pydantic>=2",
+    "litellm",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-mock",
+    "ruff>=0.3",
+]
+
+[project.scripts]
+maunakea = "maunakea.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/edisonshen/maunakea"
+"Design doc" = "https://github.com/edisonshen/maunakea/blob/main/docs/ARCHITECTURE.md"
+"Recursive lab" = "https://fengshen.dev/recursive/"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/maunakea"]

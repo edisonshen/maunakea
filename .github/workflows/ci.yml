@@ -1,0 +1,63 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install uv
+        run: pip install uv
+      - name: Build smoke (import + --version)
+        run: |
+          uv sync --extra dev
+          uv run python -c "import maunakea; print(maunakea.__version__)"
+          uv run maunakea --version
+
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install uv
+        run: pip install uv
+      - name: Ruff lint
+        run: |
+          uv sync --extra dev
+          uv run ruff check .
+
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install uv
+        run: pip install uv
+      - name: Run tests
+        run: |
+          uv sync --extra dev
+          uv run pytest -q
+
+  decoupling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+      - name: Decoupling check (no rainier imports in src/maunakea/)
+        run: |
+          if rg -l "rainier" src/maunakea/; then
+            echo "FAIL: src/maunakea/ contains references to rainier"
+            exit 1
+          fi
